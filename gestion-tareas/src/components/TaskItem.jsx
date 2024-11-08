@@ -7,7 +7,10 @@ const TaskItem = ({ task, completeTask, deleteTask }) => {
         <ListItem>
             <ListItemText 
                 primary={task.title} 
-                style={{ textDecoration: task.completed ? 'line-through' : 'none' }} 
+                sx={{ 
+                    textDecoration: task.completed ? 'line-through' : 'none',
+                    color: task.completed ? 'gray' : 'black' // Cambia el color según el estado
+                }} 
             />
             <Button 
                 onClick={() => completeTask(task.id)} 

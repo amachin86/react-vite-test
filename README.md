@@ -50,4 +50,4 @@ El objetivo es desarrollar una aplicación de "Gestión de Tareas" en la que los
 * Agregar filtros para las tareas.
 
 ### License
-Copyright © 2024, Amaury Machin. Released under the GPL 3.0.
+Copyright © 2024, Amaury Machin. Released under the GNU General Public License v3.0.

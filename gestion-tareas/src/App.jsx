@@ -78,7 +78,16 @@ const App = () => {
                     m: 2 // Margen alrededor del Box
                 }}
             >
-            <Typography variant="h4" gutterBottom align="center">
+            <Typography 
+                variant="h4" 
+                gutterBottom 
+                align="center" 
+                sx={{ 
+                    color: '#FF5733', // Color principal del texto
+                    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)', // Sombra del texto
+                    fontWeight: 'bold' 
+                }}
+            >
                 Gestión de Tareas
             </Typography>
             <AddTaskForm addTask={addTask} />

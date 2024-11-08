@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, FormHelperText } from '@mui/material';
 
 const AddTaskForm = ({ addTask }) => {
     const [taskTitle, setTaskTitle] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (taskTitle.trim()) {
-            addTask(taskTitle);
-            setTaskTitle('');
+        if (taskTitle.trim() === '') {
+            setError('El título de la tarea no puede estar vacío.');
+            return;
         }
+        addTask(taskTitle);
+        setTaskTitle('');
+        setError('');
     };
 
     return (
@@ -20,6 +24,8 @@ const AddTaskForm = ({ addTask }) => {
                 value={taskTitle}
                 onChange={(e) => setTaskTitle(e.target.value)}
                 required
+                error={Boolean(error)}
+                helperText={error}
             />
             <Button type="submit" variant="contained" color="primary">
                 Agregar

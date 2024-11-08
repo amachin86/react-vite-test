@@ -26,6 +26,7 @@ const AddTaskForm = ({ addTask }) => {
                 required
                 error={Boolean(error)}
                 helperText={error}
+                style={{ marginRight: '8px' }} 
             />
             <Button type="submit" variant="contained" color="primary">
                 Agregar

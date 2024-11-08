@@ -1,44 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Container, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import AddTaskForm from './components/AddTaskForm';
 import TaskList from './components/TaskList';
+import Pagination from './components/Pagination';
+import { Container, Typography } from '@mui/material';
+import axios from 'axios';
 
 const App = () => {
     const [tasks, setTasks] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const tasksPerPage = 5; // Número de tareas por página
 
+    // Cargar tareas desde localStorage al iniciar
     useEffect(() => {
-        // Cargar tareas desde localStorage al iniciar la aplicación
-        const storedTasks = JSON.parse(localStorage.getItem('tasks'));
+        const storedTasks = localStorage.getItem('tasks');
         if (storedTasks) {
-            setTasks(storedTasks);
+            setTasks(JSON.parse(storedTasks));
         } else {
-            // Si no hay tareas almacenadas, cargar tareas de la API
             const fetchTasks = async () => {
                 const response = await axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10');
-                const tasksWithId = response.data.map(task => ({
-                    id: task.id,
-                    title: task.title,
-                    completed: task.completed,
-                }));
-                setTasks(tasksWithId);
-                localStorage.setItem('tasks', JSON.stringify(tasksWithId)); // Guardar en localStorage
+                setTasks(response.data);
+                localStorage.setItem('tasks', JSON.stringify(response.data)); // Guardar tareas iniciales en localStorage
             };
             fetchTasks();
         }
     }, []);
 
+    // Actualizar localStorage cada vez que cambian las tareas
     useEffect(() => {
-        // Guardar tareas en localStorage cada vez que cambian
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }, [tasks]);
 
     const addTask = (title) => {
-        const newTask = { id: Date.now(), title, completed: false };
+        const newTask = {
+            id: tasks.length + 1,
+            title,
+            completed: false,
+        };
         setTasks([...tasks, newTask]);
     };
 
-    const toggleComplete = (id) => {
+    const completeTask = (id) => {
         setTasks(tasks.map(task => (task.id === id ? { ...task, completed: !task.completed } : task)));
     };
 
@@ -46,13 +47,25 @@ const App = () => {
         setTasks(tasks.filter(task => task.id !== id));
     };
 
+    // Lógica de paginación
+    const indexOfLastTask = currentPage * tasksPerPage;
+    const indexOfFirstTask = indexOfLastTask - tasksPerPage;
+    const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     return (
         <Container>
             <Typography variant="h4" gutterBottom>
                 Gestión de Tareas
             </Typography>
             <AddTaskForm addTask={addTask} />
-            <TaskList tasks={tasks} toggleComplete={toggleComplete} deleteTask={deleteTask} />
+            <TaskList tasks={currentTasks} completeTask={completeTask} deleteTask={deleteTask} />
+            <Pagination 
+                tasksPerPage={tasksPerPage} 
+                totalTasks={tasks.length} 
+                paginate={paginate} 
+            />
         </Container>
     );
 };

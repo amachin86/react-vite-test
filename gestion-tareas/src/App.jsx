@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AddTaskForm from './components/AddTaskForm';
 import TaskList from './components/TaskList';
 import Pagination from './components/Pagination';
-import { Container, Typography } from '@mui/material';
+import { Container, Typography, Box } from '@mui/material';
 import axios from 'axios';
 
 const App = () => {
@@ -57,11 +57,28 @@ const App = () => {
     const indexOfFirstTask = indexOfLastTask - tasksPerPage;
     const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber); 
 
     return (
-        <Container>
-            <Typography variant="h4" gutterBottom>
+        <div
+        style={{
+            position: 'absolute', 
+            left: '50%', 
+            top: '50%',
+            transform: 'translate(-50%, -50%)'
+        }}
+    >
+             <Box 
+                sx={{ 
+                    width: '100%', 
+                    bgcolor: 'ButtonFace', 
+                    boxShadow: 3, 
+                    borderRadius: 2, 
+                    p: 3, // Padding alrededor del Box
+                    m: 2 // Margen alrededor del Box
+                }}
+            >
+            <Typography variant="h4" gutterBottom align="center">
                 Gestión de Tareas
             </Typography>
             <AddTaskForm addTask={addTask} />
@@ -74,7 +91,8 @@ const App = () => {
                 totalTasks={tasks.length} 
                 paginate={paginate} 
             />
-        </Container>
+           </Box>
+        </div>
     );
 };
 

@@ -1,18 +1,19 @@
 import React from 'react';
-import { ListItem, ListItemText, Checkbox, IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { ListItem, ListItemText, Button } from '@mui/material';
 
-const TaskItem = ({ task, toggleComplete, deleteTask }) => {
+const TaskItem = ({ task, completeTask, deleteTask }) => {
     return (
         <ListItem>
-            <Checkbox
-                checked={task.completed}
-                onChange={() => toggleComplete(task.id)}
+            <ListItemText 
+                primary={task.title} 
+                style={{ textDecoration: task.completed ? 'line-through' : 'none' }} 
             />
-            <ListItemText primary={task.title} style={{ textDecoration: task.completed ? 'line-through' : 'none' }} />
-            <IconButton edge="end" aria-label="delete" onClick={() => deleteTask(task.id)}>
-                <DeleteIcon />
-            </IconButton>
+            <Button onClick={() => completeTask(task.id)} color="success">
+                {task.completed ? 'Revertir' : 'Completar'}
+            </Button>
+            <Button onClick={() => deleteTask(task.id)} color="error">
+                Eliminar
+            </Button>
         </ListItem>
     );
 };

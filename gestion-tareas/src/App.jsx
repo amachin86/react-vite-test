@@ -71,7 +71,7 @@ const App = () => {
              <Box 
                 sx={{ 
                     width: '100%', 
-                    bgcolor: 'ButtonFace', 
+                    bgcolor: '#D3D3D3', 
                     boxShadow: 3, 
                     borderRadius: 2, 
                     p: 3, // Padding alrededor del Box

@@ -17,7 +17,7 @@ El objetivo es desarrollar una aplicación de "Gestión de Tareas" en la que los
 ## Instalación
 1. Clona el repositorio:
    ```bash
-    git clone https://github.com/amachin86/react-vite-matrial-ui.git
+    git clone https://github.com/amachin86/react-vite-test.git
      ``` 
 
 2. Navega al directorio del proyecto

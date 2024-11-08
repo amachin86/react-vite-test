@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button, FormHelperText } from '@mui/material';
 
 const AddTaskForm = ({ addTask }) => {
@@ -17,11 +17,21 @@ const AddTaskForm = ({ addTask }) => {
         setError('');
         setSuccessMessage('Tarea agregada con éxito!');
 
-         // Eliminar el mensaje de éxito después de 5 segundos
+       /*  // Eliminar el mensaje de éxito después de 5 segundos
          setTimeout(() => {
             setSuccessMessage('');
-        }, 5000);
+        }, 5000);*/
     };
+
+    useEffect(() => {
+        let timer;
+        if (successMessage) {
+            timer = setTimeout(() => {
+                setSuccessMessage('');
+            }, 5000);
+        }
+        return () => clearTimeout(timer); // Limpia el temporizador si el componente se desmonta
+    }, [successMessage]);
 
     return (
         <form onSubmit={handleSubmit}>

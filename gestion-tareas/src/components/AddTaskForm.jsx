@@ -4,6 +4,7 @@ import { TextField, Button, FormHelperText } from '@mui/material';
 const AddTaskForm = ({ addTask }) => {
     const [taskTitle, setTaskTitle] = useState('');
     const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -14,6 +15,12 @@ const AddTaskForm = ({ addTask }) => {
         addTask(taskTitle);
         setTaskTitle('');
         setError('');
+        setSuccessMessage('Tarea agregada con éxito!');
+
+         // Eliminar el mensaje de éxito después de 5 segundos
+         setTimeout(() => {
+            setSuccessMessage('');
+        }, 5000);
     };
 
     return (
@@ -31,6 +38,11 @@ const AddTaskForm = ({ addTask }) => {
             <Button type="submit" variant="contained" color="primary">
                 Agregar
             </Button>
+            {successMessage && (
+                <FormHelperText style={{ color: 'green', marginTop: '8px' }}>
+                    {successMessage}
+                </FormHelperText>
+            )}
         </form>
     );
 };

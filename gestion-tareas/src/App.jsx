@@ -38,16 +38,15 @@ const App = () => {
         };
         setTasks([...tasks, newTask]);
     };
-
-    /*const completeTask = (id) => {
-        setTasks(tasks.map(task => (task.id === id ? { ...task, completed: !task.completed } : task)));
-    };*/
-
     const completeTask = (id) => {
-        setTasks(tasks.map(task => 
-            task.id === id ? { ...task, completed: !task.completed } : task
-        ));
-    };
+        setTasks((prevTasks) => {
+            const updatedTasks = prevTasks.map(task => 
+                task.id === id ? { ...task, completed: !task.completed } : task
+            );
+            console.log(`Tarea ${id} ${updatedTasks.find(task => task.id === id).completed ? 'completada' : 'revertida'}.`);
+            return updatedTasks;
+        });
+    };   
 
     const deleteTask = (id) => {
         setTasks(tasks.filter(task => task.id !== id));

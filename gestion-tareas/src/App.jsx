@@ -1,35 +1,49 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Container, Typography } from '@mui/material';
 import AddTaskForm from './components/AddTaskForm';
 import TaskList from './components/TaskList';
-import { Container, Typography } from '@mui/material';
-import axios from 'axios';
 
 const App = () => {
     const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
-        const fetchTasks = async () => {
-            const response = await axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10');
-            setTasks(response.data);
-        };
-        fetchTasks();
+        // Cargar tareas desde localStorage al iniciar la aplicación
+        const storedTasks = JSON.parse(localStorage.getItem('tasks'));
+        if (storedTasks) {
+            setTasks(storedTasks);
+        } else {
+            // Si no hay tareas almacenadas, cargar tareas de la API
+            const fetchTasks = async () => {
+                const response = await axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10');
+                const tasksWithId = response.data.map(task => ({
+                    id: task.id,
+                    title: task.title,
+                    completed: task.completed,
+                }));
+                setTasks(tasksWithId);
+                localStorage.setItem('tasks', JSON.stringify(tasksWithId)); // Guardar en localStorage
+            };
+            fetchTasks();
+        }
     }, []);
 
+    useEffect(() => {
+        // Guardar tareas en localStorage cada vez que cambian
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }, [tasks]);
+
     const addTask = (title) => {
-        const newTask = {
-            id: tasks.length + 1,
-            title,
-            completed: false,
-        };
+        const newTask = { id: Date.now(), title, completed: false };
         setTasks([...tasks, newTask]);
     };
 
-    const completeTask = (id) => {
+    const toggleComplete = (id) => {
         setTasks(tasks.map(task => (task.id === id ? { ...task, completed: !task.completed } : task)));
     };
 
     const deleteTask = (id) => {
-        setTasks(tasks .filter(task => task.id !== id));
+        setTasks(tasks.filter(task => task.id !== id));
     };
 
     return (
@@ -38,7 +52,7 @@ const App = () => {
                 Gestión de Tareas
             </Typography>
             <AddTaskForm addTask={addTask} />
-            <TaskList tasks={tasks} completeTask={completeTask} deleteTask={deleteTask} />
+            <TaskList tasks={tasks} toggleComplete={toggleComplete} deleteTask={deleteTask} />
         </Container>
     );
 };

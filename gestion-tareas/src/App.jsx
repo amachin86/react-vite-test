@@ -39,8 +39,14 @@ const App = () => {
         setTasks([...tasks, newTask]);
     };
 
-    const completeTask = (id) => {
+    /*const completeTask = (id) => {
         setTasks(tasks.map(task => (task.id === id ? { ...task, completed: !task.completed } : task)));
+    };*/
+
+    const completeTask = (id) => {
+        setTasks(tasks.map(task => 
+            task.id === id ? { ...task, completed: !task.completed } : task
+        ));
     };
 
     const deleteTask = (id) => {
@@ -61,6 +67,9 @@ const App = () => {
             </Typography>
             <AddTaskForm addTask={addTask} />
             <TaskList tasks={currentTasks} completeTask={completeTask} deleteTask={deleteTask} />
+            <Typography variant="body1" style={{ marginTop: '20px', textAlign: 'center' }}>
+            Mostrando {currentTasks.length} de {tasks.length} tareas
+            </Typography>
             <Pagination 
                 tasksPerPage={tasksPerPage} 
                 totalTasks={tasks.length} 

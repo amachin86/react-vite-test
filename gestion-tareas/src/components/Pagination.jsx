@@ -13,6 +13,7 @@ const Pagination = ({ tasksPerPage, totalTasks, paginate }) => {
             count={pageNumbers.length} 
             onChange={(event, value) => paginate(value)} 
             color="primary" 
+            sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}
         />
     );
 };
